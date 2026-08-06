@@ -1,18 +1,19 @@
 ---
 name: optima-eval-prep
-description: Make a custom Optima (Artificial Analysis) benchmark from the user's own work. Stage real task instances, ground-truth notes, and the documents behind them, write the brief, and package a ZIP for the platform's "Describe your use case" screen. Use when the user says "make an eval", "build an eval", "prep an eval", "get an eval ready", "make a benchmark from my codebase / docs / tickets / this chat", or "which model is best at [our task]".
+description: Make a custom Optima (Artificial Analysis) benchmark from the user's own work. Stage real task instances, ground-truth notes, and the documents behind them, write the brief, and package a ZIP the user drops on the platform's upload screen. Use when the user says "make an eval", "build an eval", "prep an eval", "get an eval ready", "make a benchmark from my codebase / docs / tickets / this chat", or "which model is best at [our task]".
 metadata:
   author: Artificial Analysis
-  version: '0.3'
+  version: '1.1'
 ---
 
 # Optima eval prep
 
 Use when the user wants a custom Optima benchmark built from their own
 work. You stage the material; the platform's build agent designs the
-benchmark. The hand-off is one ZIP the user attaches on the platform's
-**Describe your use case** screen, plus a one-line summary pasted into the
-same form.
+benchmark. The hand-off is one ZIP and nothing else: the user drops it on
+the upload screen and presses Continue. The brief travels inside the
+archive and the evaluation type is stamped on it, so there is nothing to
+type, paste or pick on the site.
 
 ## Rules
 
@@ -28,8 +29,8 @@ same form.
   this repo, from a folder of documents or tickets you point me at, or from
   a use case you describe.`
 - You do not finalize the benchmark. Task count, task wording, scoring
-  levels, and weights are the build agent's call. It shows the user a plan
-  before building.
+  levels, and weights are the build agent's call, so do not over-specify
+  either in the brief.
 - Give the build agent concrete material: real instances paired with the
   outputs that were accepted, established answers with their evidence, and
   the mistakes people actually make. It can only be as specific as what you
@@ -39,19 +40,26 @@ same form.
   generated stand-ins that keep the real structure, field names, length,
   and messiness, and declare them in the manifest.
 
-## What the platform cannot grade
+## What the grader can check
 
-The grader reads; it never executes. Check these before staging anything.
-If the use case fails one, say so and propose the nearest gradeable
-reformulation.
+The grader reads the answer; it never runs it, so a use case only works if a
+fixed right answer can be verified by reading — check this before staging
+anything, and if a use case fails, say so and propose the nearest gradeable
+reformulation. Two things fail it. Anything graded by execution — "passes the
+test suite", "returns the right rows" — has to be restated toward what reading
+can verify, with a note on what is no longer measured; and anything needing
+bespoke tools or systems, like an internal API or database, has to be restated
+around supplied files. 
 
-- No grading by execution: "passes the test suite", "returns the right
-  rows". Restate toward what reading can verify, and say what is no longer
-  measured.
-- Nothing live: no browsing, no current prices, no "as of today".
-- No bespoke tools or systems. Work that needs an internal API or database
-  is restated around supplied files.
-- No multi-turn conversation evals. Single task in, answer out.
+The web is available if the user turns it on: agentic runs have a Web search
+switch ("Let the agent look things up while it works"), off by default and
+agentic-only, so a task may depend on looking something up as long as the
+*right answer* is still fixed — "summarise this company's latest filing" is
+fine when you attach the filing and grade against it, whereas "what is the
+share price today" is not gradeable at all, because the answer moves
+regardless of who can browse. Long agentic work is likewise fine: runs get a
+generous per-task turn budget, so multi-step work that produces a file is a
+normal task, not an edge case.
 
 ## Intake
 
@@ -183,18 +191,6 @@ avoid it.
 Before hand-off run the checker installed next to this file:
 
 `python <this skill's directory>/scripts/check_bundle.py <path-to-zip>`
-
-Exit 0 means shippable. Fix anything it reports and re-run. If the script
-is missing, keep within these limits:
-
-- At most 30 files in the archive, and no archive nested inside it.
-- Stick to common document types: PDF, Office documents (prefer `.xlsx`
-  over `.csv` for tabular data), images, and plain text such as `.md`,
-  `.txt`, `.csv`, `.json`.
-- Keep any text file under 50,000 characters. Split longer material at
-  section boundaries into `<name>_part1of2.md` and `<name>_part2of2.md`
-  rather than trimming. Disclose anything trimmed at the top of the file
-  and in the manifest, and never trim in a way that makes the task easier.
 
 Before hand-off confirm: every filename self-describing; provenance stated
 for every file; nothing confidential the user has not cleared; every known
