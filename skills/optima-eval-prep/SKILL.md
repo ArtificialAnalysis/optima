@@ -3,7 +3,7 @@ name: optima-eval-prep
 description: Make a custom Optima (Artificial Analysis) benchmark from the user's own work. Stage real task instances, ground-truth notes, and the documents behind them, write the brief, and package a ZIP the user drops on the platform's upload screen. Use when the user says "make an eval", "build an eval", "prep an eval", "get an eval ready", "make a benchmark from my codebase / docs / tickets / this chat", or "which model is best at [our task]".
 metadata:
   author: Artificial Analysis
-  version: '1.1'
+  version: '1.0'
 ---
 
 # Optima eval prep
