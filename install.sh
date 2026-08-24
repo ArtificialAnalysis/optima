@@ -13,10 +13,16 @@ SKILL_NAME="optima-eval-prep"
 # Where this script lives, if it was run from a clone rather than piped to sh.
 SRC_DIR=""
 case "$0" in
-  */*) candidate="$(cd "$(dirname "$0")" && pwd)/skills/$SKILL_NAME" ;;
-  *) candidate="" ;;
+  */*) script_path="$0" ;;
+  install.sh) script_path="./$0" ;;
+  *) script_path="" ;;
 esac
-[ -n "$candidate" ] && [ -f "$candidate/SKILL.md" ] && SRC_DIR="$candidate"
+if [ -n "$script_path" ]; then
+  candidate="$(cd "$(dirname "$script_path")" && pwd)/skills/$SKILL_NAME"
+  if [ -f "$candidate/SKILL.md" ]; then
+    SRC_DIR="$candidate"
+  fi
+fi
 
 install_into() {
   mkdir -p "$1/$SKILL_NAME/scripts"
@@ -27,6 +33,7 @@ install_into() {
     curl -fsSL "$BASE_URL/SKILL.md" -o "$1/$SKILL_NAME/SKILL.md"
     curl -fsSL "$BASE_URL/scripts/check_bundle.py" -o "$1/$SKILL_NAME/scripts/check_bundle.py"
   fi
+  chmod +x "$1/$SKILL_NAME/scripts/check_bundle.py"
   installed="$installed
   $1/$SKILL_NAME"
 }
