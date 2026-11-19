@@ -124,12 +124,12 @@ Deleted Contract review.
 ```
 
 - To change a saved benchmark's tasks, copy it into a draft, import into the copy, and save the copy.
-- `optima delete-run <run>` deletes one run and its results. Neither command stops a run, so each one refuses while a run is in progress or still grading. Stop the run with `optima stop <run>`, or wait until its grading ends.
+- `optima runs delete <run>` deletes one run and its results. Neither command stops a run, so each one refuses while a run is in progress or still grading. Stop the run with `optima stop <run>`, or wait until its grading ends.
 - `optima auto-runs` prints the benchmarks that Optima runs on each new model automatically. `optima auto-runs off <benchmark>` turns off auto-runs for one benchmark, and runs that already started keep going.
 
 ### For coding agents
 
-Every command takes `--json`, and then prints one JSON object on stdout. With `--json`, the commands `launch`, `delete` and `delete-run` never ask a question. Each one exits 3 with the exact command to run once the person agrees, and `launch` also includes the estimate.
+Every command takes `--json`, and then prints one JSON object on stdout. With `--json`, the commands `launch`, `delete` and `runs delete` never ask a question. Each one exits 3 with the exact command to run once the person agrees, and `launch` also includes the estimate.
 
 ### When a command fails
 
